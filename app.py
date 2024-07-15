@@ -22,7 +22,7 @@ def get_custom_element():
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "assistant", "content": "#FF02A1"},
+            {"role": "system", "content": "Answer in hex format"},
             {"role": "user", "content": f"Main color of: {element_name}"},
         ]
     )
@@ -31,7 +31,7 @@ def get_custom_element():
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "assistant", "content": "#FF02A1"},
+            {"role": "system", "content": "Answer in hex format"},
             {"role": "user", "content": f"Secondary color of: {element_name}"},
         ]
     )
