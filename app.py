@@ -23,8 +23,8 @@ def get_custom_element():
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Answer in hex format only (ex: #FF0A19)"},
-            {"role": "user", "content": f"Main color of: {element_name}"},
+            {"role": "system", "content": "Answer in HEX format exactly"},
+            {"role": "user", "content": f"Color of '{element_name}'"},
         ]
     )
     response["color_0"] = completion.choices[0].message.content
@@ -33,8 +33,8 @@ def get_custom_element():
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Answer in hex format only (ex: #FF0A19)"},
-            {"role": "user", "content": f"Secondary color of: {element_name}"},
+            {"role": "system", "content": "Answer in HEX format exactly"},
+            {"role": "user", "content": f"Color of '{element_name}'"},
         ]
     )
     response["color_1"] = completion.choices[0].message.content
@@ -43,8 +43,8 @@ def get_custom_element():
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Answer using only an exact item from the list"},
-            {"role": "user", "content": f"From this list of choices: [liquid, gas, rigid_solid, powdery_solid, life], pick the best description of {element_name}"}
+            {"role": "system", "content": "Answer only an exact entry from the list: [liquid, gas, rigid_solid, powdery_solid, life]"},
+            {"role": "user", "content": f"Best description of '{element_name}'"}
         ]
     )
     response["state"] = completion.choices[0].message.content
@@ -53,8 +53,8 @@ def get_custom_element():
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Answer in one character only: Y or N"},
-            {"role": "user", "content": f"Is {element_name} flammable?"}
+            {"role": "system", "content": "Answer either Y or N exactly"},
+            {"role": "user", "content": f"Is '{element_name}' flammable?"}
         ]
     )
     response["flammable"] = completion.choices[0].message.content
@@ -63,8 +63,8 @@ def get_custom_element():
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Answer in one character only: Y or N"},
-            {"role": "user", "content": f"Is {element_name} explosive?"}
+            {"role": "system", "content": "Answer either Y or N exactly"},
+            {"role": "user", "content": f"Is '{element_name}' explosive?"}
         ]
     )
     response["explosive"] = completion.choices[0].message.content
