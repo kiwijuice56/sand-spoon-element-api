@@ -1,4 +1,4 @@
-from flask import flask, request
+from flask import Flask, request
 from flask_cors import CORS
 
 from openai import OpenAI
