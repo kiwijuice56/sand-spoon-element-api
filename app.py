@@ -105,7 +105,7 @@ def get_custom_element():
 
             answer, prompt_tokens = prompt("Guess randomly if unknown. Use no words and always respond in one number on a scale from 0.00 to 1.00 exactly, where 0.00 is oil and 1.00 is honey. ",
                                            f"Viscosity of {element_name}")
-            response["viscosity"] = max(0.0, min(clean_number(answer, 0.5)))
+            response["viscosity"] = max(0.0, min(1.0, clean_number(answer, 0.5)))
             total_tokens += prompt_tokens
 
     print(total_tokens)
