@@ -17,16 +17,30 @@ def get_custom_element():
     if len(element_name) == 0:
         return {}
 
+    response = {}
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "Answer in hex only"},
-            {"role": "user", "content": f"Color of: {element_name}"}
+            {"role": "assistant", "content": "#FF02A1"},
+            {"role": "user", "content": f"Main color of: {element_name}"},
+            {"role": "assistant", "content": "#FF02A1"},
+            {"role": "user", "content": f"Secondary color of: {element_name}"}
         ]
     )
+    response["color_0"] = completion.choices[0].message.content
+    response["color_1"] = completion.choices[1].message.content
 
-    return {"color": completion.choices[0].message.content}
+    completion = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "Answer in 1 word"},
+            {"role": "user", "content": f"From this list of choices: [liquid, gas, rigid_solid, powdery_solid, life], pick the best description of {element_name}"}
+        ]
+    )
+    response["state"] = completion.choices[0].message.content
+
+    return completion
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
