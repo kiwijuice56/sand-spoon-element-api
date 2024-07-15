@@ -41,7 +41,7 @@ def clean_state(state):
 
 
 def clean_number(number, default):
-    number = ''.join(c for c in number if c.isnumeric())
+    number = ''.join(c for c in number if c.isnumeric() or c == '.')
 
     try:
         return float(number)
