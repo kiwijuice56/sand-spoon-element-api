@@ -41,6 +41,8 @@ def clean_state(state):
 
 
 def clean_number(number, default):
+    # Sometimes included due to density units
+    number = number.replace("-3", "")
     number = ''.join(c for c in number if c.isnumeric() or c == '.')
 
     try:
@@ -76,44 +78,42 @@ def get_custom_element():
 
     # General questions for all elements
 
-    answer, prompt_tokens = prompt("Answer in HEX format exactly", f"Color of '{element_name}'")
+    answer, prompt_tokens = prompt("Answer in HEX format exactly", f"Color:'{element_name}'")
     response["color_0"] = clean_color(answer)
     total_tokens += prompt_tokens
 
-    answer, prompt_tokens = prompt("Answer in HEX format exactly", f"Color of '{element_name}'")
+    answer, prompt_tokens = prompt("Answer in HEX format exactly", f"Color:'{element_name}'")
     response["color_1"] = clean_color(answer)
     total_tokens += prompt_tokens
 
-    answer, prompt_tokens = prompt("Answer only an exact entry from the list: " + str(possible_states),
-                                   f"Best description of '{element_name}'")
+    answer, prompt_tokens = prompt("Answer only an exact entry from the list:" + "".join(c for c in str(possible_states) if not c == " "),
+                                   f"Best description:'{element_name}'")
     response["state"] = clean_state(answer)
     total_tokens += prompt_tokens
 
-    answer, prompt_tokens = prompt("Guess randomly if unknown. Use no words and always respond in one Kelvin (K) number exactly",
-                                   f"Temperature of {element_name}")
+    answer, prompt_tokens = prompt("Use no words and always respond in one Kelvin number exactly",
+                                   f"Temperature:{element_name}")
     response["temperature"] = clean_number(answer, 298.0)
     total_tokens += prompt_tokens
 
     # State-specific questions
     match response["state"]:
         case "liquid":
-            # We need to ask for no units, otherwise all numbers will be parsed with an extra '3' at the end
-            answer, prompt_tokens = prompt("Guess randomly if unknown. Use no words and always respond in one kg * m^-3 number exactly. Do not include units.",
-                                           f"Density of {element_name}")
+            answer, prompt_tokens = prompt("Use no words and always respond in one kg*m^-3 number exactly",
+                                           f"Density:{element_name}")
             response["density"] = max(0, min(10000, clean_number(answer, 1000.0)))
             total_tokens += prompt_tokens
 
-            answer, prompt_tokens = prompt("Guess randomly if unknown. Use no words and always respond in one number on a scale from 0.00 to 1.00 exactly, where 0.00 is oil and 1.00 is honey. ",
-                                           f"Viscosity of {element_name}")
+            answer, prompt_tokens = prompt("Use no words and always respond in one number on a scale from 0.0 to 1.0 exactly",
+                                           f"Viscosity:{element_name} (water is 0.8)")
             response["viscosity"] = max(0.0, min(1.0, clean_number(answer, 0.5)))
             total_tokens += prompt_tokens
         case "gas":
-            answer, prompt_tokens = prompt("Guess randomly if unknown. Use no words and always respond in one kg * m^-3 number exactly. Do not include units.",
-                                           f"Density of {element_name}")
+            answer, prompt_tokens = prompt("Use no words and always respond in one kg*m^-3 number exactly.",
+                                           f"Density:{element_name}")
             response["density"] = max(0, min(10000, clean_number(answer, 1000.0)))
             total_tokens += prompt_tokens
-
-    print(total_tokens)
+    response["tokens_used"] = total_tokens
     print(response)
     return response
 
