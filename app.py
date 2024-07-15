@@ -1,12 +1,17 @@
+import os
+from dotenv import load_dotenv
+
 from flask import Flask, request
 from flask_cors import CORS
 
 from openai import OpenAI
 
+load_dotenv()
+
 app = Flask(__name__)
 CORS(app)
 
-client = OpenAI()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @app.route('/')
 def get_custom_element():
@@ -23,7 +28,7 @@ def get_custom_element():
         ]
     )
 
-    return {"color": completion.choices[0].message}
+    return {"color": completion.choices[0].message.content}
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
