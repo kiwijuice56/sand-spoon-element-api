@@ -10,7 +10,7 @@ app = Flask(__name__)
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
-possible_states = ['liquid', 'gas', 'rigid_solid', 'powdery_solid', 'metal', 'laser', 'electricity', 'life', 'explosive']
+possible_states = ['liquid', 'gas', 'rigid_solid', 'powdery_solid', 'metal', 'laser', 'electricity', 'creature', 'microbe', 'explosive']
 
 
 def clean_color(color):
@@ -106,6 +106,11 @@ def get_custom_element():
             answer, prompt_tokens = prompt("Guess randomly if unknown. Use no words and always respond in one number on a scale from 0.00 to 1.00 exactly, where 0.00 is oil and 1.00 is honey. ",
                                            f"Viscosity of {element_name}")
             response["viscosity"] = max(0.0, min(1.0, clean_number(answer, 0.5)))
+            total_tokens += prompt_tokens
+        case "gas":
+            answer, prompt_tokens = prompt("Guess randomly if unknown. Use no words and always respond in one kg * m^-3 number exactly. Do not include units.",
+                                           f"Density of {element_name}")
+            response["density"] = max(0, min(10000, clean_number(answer, 1000.0)))
             total_tokens += prompt_tokens
 
     print(total_tokens)
