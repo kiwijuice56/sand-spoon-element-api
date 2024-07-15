@@ -46,7 +46,8 @@ def get_custom_element():
     )
     response["state"] = completion.choices[0].message.content
 
-    return completion
+    print(response)
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
