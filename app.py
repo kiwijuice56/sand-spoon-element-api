@@ -10,7 +10,7 @@ app = Flask(__name__)
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
-possible_states = ['liquid', 'gas', 'rigid_solid', 'powdery_solid', 'metal', 'laser', 'electricity', 'life', 'bomb']
+possible_states = ['liquid', 'gas', 'rigid_solid', 'powdery_solid', 'metal', 'laser', 'electricity', 'life', 'explosive']
 
 
 def clean_color(color):
