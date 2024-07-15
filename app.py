@@ -66,6 +66,11 @@ def get_custom_element():
     if len(element_name) == 0:
         return {}
 
+    moderation_response = client.moderations.create(input=element_name).results[0]
+    if moderation_response.flagged:
+        return {"warning": "be nice"}
+
+
     response = {"element_name": element_name}
     total_tokens = 0
 
