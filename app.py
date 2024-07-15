@@ -28,7 +28,7 @@ def get_custom_element():
         ]
     )
     response["color_0"] = completion.choices[0].message.content
-    total_tokens += completion["usage"].total_tokens
+    total_tokens += completion.usage.total_tokens
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -38,7 +38,7 @@ def get_custom_element():
         ]
     )
     response["color_1"] = completion.choices[0].message.content
-    total_tokens += completion["usage"].total_tokens
+    total_tokens += completion.usage.total_tokens
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -48,7 +48,7 @@ def get_custom_element():
         ]
     )
     response["state"] = completion.choices[0].message.content
-    total_tokens += completion["usage"].total_tokens
+    total_tokens += completion.usage.total_tokens
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -58,7 +58,7 @@ def get_custom_element():
         ]
     )
     response["flammable"] = completion.choices[0].message.content
-    total_tokens += completion["usage"].total_tokens
+    total_tokens += completion.usage.total_tokens
 
     completion = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -68,7 +68,7 @@ def get_custom_element():
         ]
     )
     response["explosive"] = completion.choices[0].message.content
-    total_tokens += completion["usage"].total_tokens
+    total_tokens += completion.usage.total_tokens
 
     print(total_tokens)
     print(response)
