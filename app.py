@@ -96,7 +96,7 @@ def get_custom_element():
 
     # State-specific questions
     match response["state"]:
-        case "fluid":
+        case "liquid":
             # We need to ask for no units, otherwise all numbers will be parsed with an extra '3' at the end
             answer, prompt_tokens = prompt("Guess randomly if unknown. Use no words and always respond in one kg * m^-3 number exactly. Do not include units.",
                                            f"Density of {element_name}")
