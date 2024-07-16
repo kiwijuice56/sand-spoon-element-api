@@ -93,7 +93,7 @@ def get_custom_element():
 
     answer, prompt_tokens = prompt("Use no words and always respond in one Kelvin number exactly",
                                    f"Temperature:{element_name}")
-    response["temperature"] = clean_number(answer, 298.0)
+    response["temperature"] = max(0, min(10000, clean_number(answer, 298.0)))
     total_tokens += prompt_tokens
 
     # State-specific questions
@@ -101,7 +101,7 @@ def get_custom_element():
         case "liquid":
             answer, prompt_tokens = prompt("Use no words and always respond in one kg*m^-3 number exactly",
                                            f"Density:{element_name}")
-            response["density"] = max(0, min(10000, clean_number(answer, 1000.0)))
+            response["density"] = max(0, min(100000, clean_number(answer, 1000.0)))
             total_tokens += prompt_tokens
 
             answer, prompt_tokens = prompt("Use no words and always respond in one number on a scale from 0.0 to 1.0 exactly",
@@ -111,7 +111,7 @@ def get_custom_element():
         case "gas":
             answer, prompt_tokens = prompt("Use no words and always respond in one kg*m^-3 number exactly.",
                                            f"Density:{element_name}")
-            response["density"] = max(0, min(10000, clean_number(answer, 1000.0)))
+            response["density"] = max(0, min(100000, clean_number(answer, 1000.0)))
             total_tokens += prompt_tokens
     response["tokens_used"] = total_tokens
     print(response)
