@@ -1,5 +1,5 @@
-# chaos-sands-element-api
-Web server and free API that uses OpenAI to generate falling sand elements (for the game [chaos-sands](https://github.com/kiwijuice56/chaos-sands)) from text. 
+# sand-spoon-element-api
+Web server and free API that uses OpenAI to generate falling sand elements (for the game [sand-spoon](https://github.com/kiwijuice56/sand-spoon)) from text. 
 
 ## Usage
 Request from the URL `https://122412240.xyz/?element_name={your_element_name_here}`, replacing `your_element_name_here` with any 12 character word. 
