@@ -30,7 +30,7 @@ def clean_color(color):
 
 def clean_text(text):
     # Remove quotes and other punctuation
-    state = ''.join(c for c in state if c.isalpha() or c == '_')
+    text = ''.join(c for c in text if c.isalpha() or c == '_')
 
     # Strangely, ChatGPT sometimes capitalizes answers
     text = text.lower()
