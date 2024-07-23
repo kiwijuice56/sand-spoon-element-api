@@ -64,7 +64,9 @@ def prompt(system_message, user_message):
 
 @app.route('/')
 def get_custom_element():
-    element_name = request.args.get("element_name")[:12]
+    element_name = request.args.get("element_name")[:16]
+    reactions_enabled = "reactions" in request.args
+
     if len(element_name) == 0:
         return {}
 
@@ -95,6 +97,16 @@ def get_custom_element():
                                    f"Temperature:{element_name}")
     response["temperature"] = max(0, min(10000, clean_number(answer, 298.0)))
     total_tokens += prompt_tokens
+
+    # Generate new elements to transform into
+    if reactions_enabled:
+        answer, prompt_tokens = prompt("Answer in 1 word exactly", f"What does '{element_name}' turn into when heated")
+        response["heat_transformation"] = answer[:16].lower()
+        total_tokens += prompt_tokens
+
+        answer, prompt_tokens = prompt("Answer in 1 word exactly", f"What does '{element_name}' turn into when cooled")
+        response["cold_transformation"] = answer[:16].lower()
+        total_tokens += prompt_tokens
 
     # State-specific questions
     match response["state"]:
