@@ -1,5 +1,6 @@
 import os
 import re
+import random
 from dotenv import load_dotenv
 from flask import Flask, request
 from openai import OpenAI
@@ -27,17 +28,22 @@ def clean_color(color):
         return "#FFFFFF"
 
 
-def clean_state(state):
+def clean_text(text):
     # Remove quotes and other punctuation
     state = ''.join(c for c in state if c.isalpha() or c == '_')
 
     # Strangely, ChatGPT sometimes capitalizes answers
-    state = state.lower()
+    text = text.lower()
+
+    return text
+
+def clean_state(state):
+    state = clean_text(state)
 
     if state in possible_states:
         return state
     else:
-        return 'rigid_solid'
+        return random.choice(possible_states)
 
 
 def clean_number(number, default):
@@ -101,11 +107,11 @@ def get_custom_element():
     # Generate new elements to transform into
     if reactions_enabled:
         answer, prompt_tokens = prompt("Answer in 1 word exactly", f"What does '{element_name}' turn into when heated")
-        response["heat_transformation"] = answer[:16].lower()
+        response["heat_transformation"] = clean_text(answer[:16])
         total_tokens += prompt_tokens
 
         answer, prompt_tokens = prompt("Answer in 1 word exactly", f"What does '{element_name}' turn into when cooled")
-        response["cold_transformation"] = answer[:16].lower()
+        response["cold_transformation"] = clean_text(answer[:16])
         total_tokens += prompt_tokens
 
     # State-specific questions
